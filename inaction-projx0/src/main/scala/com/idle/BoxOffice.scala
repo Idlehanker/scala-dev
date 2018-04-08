@@ -36,7 +36,7 @@ class BoxOffice(implicit timeout: Timeout) extends Actor{
         case CreateEvent(name, tickets)=>
             def create()={
                 val eventTickets = createTicketSeller(name)
-                val newTickets = (1 to tickets).map{ticketId =>
+                val newTickets = (1 to tickets).map{ ticketId =>
                     TicketSeller.Ticket(ticketId)
                 }.toVector
                 eventTickets ! TicketSeller.Add(newTickets)

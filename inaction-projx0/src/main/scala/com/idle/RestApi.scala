@@ -10,8 +10,7 @@ import akka.util.Timeout
 
 import scala.concurrent.ExecutionContext
 
-class RestApi(system: ActorSystem, timeout: Timeout) 
-    extends RestRoutes{
+class RestApi(system: ActorSystem, timeout: Timeout) extends RestRoutes{
 
     implicit val requestTimeout = timeout
     implicit def executionContext = system.dispatcher

@@ -16,17 +16,16 @@ lazy val root = (project in file(".")).
     //libraryDependencies += scalaTest % Test
     libraryDependencies ++= {
 
-      // val akkaVersion = "2.5.0"
-      // val akkaHttpVersion = "10.0.6"
+      val akkaVersion = "2.4.11"
 
       Seq(
-        "com.typesafe.akka" %% "akka-actor"      % "2.4.11", 
+        "com.typesafe.akka" %% "akka-actor"      % akkaVersion, 
 
-        "com.typesafe.akka" %% "akka-http-core"  % "2.4.11",  
-        "com.typesafe.akka" %% "akka-http-experimental"  % "2.4.11", 
-        "com.typesafe.akka" %% "akka-http-spray-json-experimental"  % "2.4.11", 
+        "com.typesafe.akka" %% "akka-http-core"  % akkaVersion,  
+        "com.typesafe.akka" %% "akka-http-experimental"  % akkaVersion, 
+        "com.typesafe.akka" %% "akka-http-spray-json-experimental"  % akkaVersion, 
           
-        "com.typesafe.akka" %% "akka-slf4j"       %  "2.4.11",
+        "com.typesafe.akka" %% "akka-slf4j"       % akkaVersion,
         "ch.qos.logback"    %  "logback-classic"  % "1.2.3",
         "com.typesafe.akka" %% "akka-testkit"     % "2.5.9"   % "test",
         "org.scalatest"     %% "scalatest"        % "3.0.5"       % "test"
