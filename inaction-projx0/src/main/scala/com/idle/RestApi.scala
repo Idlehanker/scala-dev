@@ -18,8 +18,7 @@ class RestApi(system: ActorSystem, timeout: Timeout) extends RestRoutes{
     def createBoxOffice = system.actorOf(BoxOffice.props, BoxOffice.name)
 }
 
-trait RestRoutes extends BoxOfficeApi 
-    with EventMarshalling {
+trait RestRoutes extends BoxOfficeApi with EventMarshalling {
     
     import StatusCodes._
     
