@@ -31,6 +31,7 @@ class BoxOffice(implicit timeout: Timeout) extends Actor{
         context.actorOf(TicketSeller.props(name), name)
 
     def receive = {
+        
         case CreateEvent(name, tickets)=>
             def create()={
                 val eventTickets = createTicketSeller(name)
@@ -62,7 +63,7 @@ class BoxOffice(implicit timeout: Timeout) extends Actor{
                 self.ask(GetEvent(child.path.name)).mapTo[Option[Event]]
             }
             
-            def convertToEvents(f: Future[Iterator[Option[Event]]]) = 
+            def convertToEvents(f: Future[Iterable[Option[Event]]]) = 
                 f.map(_.flatten).map(l=>Events(l.toVector))
             
             pipe(convertToEvents(Future.sequence(getEvents))) to sender()

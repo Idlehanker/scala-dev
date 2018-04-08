@@ -9,7 +9,7 @@ import akka.http.scaladsl.Http.ServerBinding
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
 
-import com.typesafe.config.{ Config, ConfigFatory}
+import com.typesafe.config.{ Config, ConfigFactory}
 
 object Main extends App with RequestTimeout{
 
@@ -24,7 +24,7 @@ object Main extends App with RequestTimeout{
 
 
     implicit val materializer = ActorMaterializer()
-    val bindingFuture: Future[SeverBinding] = 
+    val bindingFuture: Future[ServerBinding] = 
         Http().bindAndHandle(api, host, port)
 
     val log = Logging(system.eventStream, "go-tickets")
