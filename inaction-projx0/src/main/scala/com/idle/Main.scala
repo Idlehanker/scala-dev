@@ -11,6 +11,8 @@ import akka.util.Timeout
 
 import com.typesafe.config.{ Config, ConfigFactory}
 
+
+
 object Main extends App with RequestTimeout{
 
     val config = ConfigFactory.load()
@@ -18,13 +20,13 @@ object Main extends App with RequestTimeout{
     val port = config.getInt("http.port")
 
     implicit val system = ActorSystem()
-    implicit val ec = system.dispatcher
+    implicit val dispatcher = system.dispatcher
 
     val api = new RestApi(system, requestTimeout(config)).routes
 
 
     implicit val materializer = ActorMaterializer()
-    val bindingFuture: Future[ServerBinding] = 
+    val bindingFuture: Future[ServerBinding] =
         Http().bindAndHandle(api, host, port)
 
     val log = Logging(system.eventStream, "go-tickets")
@@ -38,11 +40,11 @@ object Main extends App with RequestTimeout{
 }
 
 trait RequestTimeout{
-    import scala.concurrent.duration._
+  import scala.concurrent.duration._
+
     def requestTimeout(config: Config): Timeout = {
         val t = config.getString("akka.http.server.request-timeout")
         val d = Duration(t)
         FiniteDuration(d.length, d.unit)
     }
 }
-

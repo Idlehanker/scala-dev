@@ -19,9 +19,9 @@ class RestApi(system: ActorSystem, timeout: Timeout) extends RestRoutes{
 }
 
 trait RestRoutes extends BoxOfficeApi with EventMarshalling {
-    
+
     import StatusCodes._
-    
+
     def routes: Route = eventRoute ~ eventRoute ~ ticketsRoute
 
     def eventsRoute =
@@ -34,7 +34,7 @@ trait RestRoutes extends BoxOfficeApi with EventMarshalling {
                 }
             }
         }
-    
+
     def eventRoute =
         pathPrefix("events" / Segment){ event =>
             pathEndOrSingleSlash{
@@ -55,19 +55,19 @@ trait RestRoutes extends BoxOfficeApi with EventMarshalling {
                 }~
                 delete{
                     onSuccess(cancelEvent(event)){
-                        _.fold(complete(NotFound))(e => complete(OK, e))
+                      _.fold(complete(NotFound))(e => complete(OK, e))
                     }
                 }
             }
         }
-    
-    def ticketsRoute = 
+
+    def ticketsRoute =
         pathPrefix("events" / Segment / "tickets"){ event =>
             post {
                 pathEndOrSingleSlash{
                     entity(as[TicketRequest]) { request =>
                         onSuccess(requestTickets(event, request.tickets)){ tickets =>
-                            if(tickets.entries.isEmpty) complete(NotFound)
+                            if (tickets.entries.isEmpty) complete(NotFound)
                             else complete(Created, tickets)
                             }
                         }
@@ -87,23 +87,23 @@ trait BoxOfficeApi{
 
     lazy val boxOffice = createBoxOffice()
 
-    def createEvent(event: String, nrOfTickets: Int) = 
+    def createEvent(event: String, nrOfTickets: Int) =
         boxOffice.ask(CreateEvent(event, nrOfTickets))
             .mapTo[EventResponse]
-    
-    def getEvents() = 
+
+    def getEvents() =
         boxOffice.ask(GetEvents).mapTo[Events]
 
-    def getEvent(event: String) = 
+    def getEvent(event: String) =
         boxOffice.ask(GetEvent(event))
             .mapTo[Option[Event]]
 
-    def cancelEvent(event: String) = 
+    def cancelEvent(event: String) =
         boxOffice.ask(CancelEvent(event))
             .mapTo[Option[Event]]
- 
 
-    def requestTickets(event: String, tickets: Int) = 
+
+    def requestTickets(event: String, tickets: Int) =
         boxOffice.ask(GetTickets(event, tickets))
             .mapTo[TicketSeller.Tickets]
 }
